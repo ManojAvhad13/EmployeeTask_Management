@@ -1,10 +1,19 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import { useUserAuth } from '../../components/hooks/useUserAuth'
+import { UserContext } from '../../components/context/userContext';
+import DashboardLayout from '../../components/layouts/DashboardLayout';
 
 const Dashboard = () => {
+    useUserAuth();
+
+    const { user } = useContext(UserContext)
+
     return (
-        <div>
+        <DashboardLayout activeMenu="Dashboard">
             Dashboard
-        </div>
+            {/* {JSON.stringify(user)}  --> Show user information in UI */}
+
+        </DashboardLayout>
     )
 }
 
