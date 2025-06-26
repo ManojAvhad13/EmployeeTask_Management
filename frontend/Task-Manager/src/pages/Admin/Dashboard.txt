@@ -41,7 +41,7 @@ const Dashboard = () => {
         const PriorityLevelData = [
             { priority: "Low", count: taskPriorityLevels?.Low || 0 },
             { priority: "Medium", count: taskPriorityLevels?.Medium || 0 },
-            { priority: "Hign", count: taskPriorityLevels?.Hign || 0 },
+            { priority: "High", count: taskPriorityLevels?.High || 0 },
         ];
 
         setBarChartData(PriorityLevelData);

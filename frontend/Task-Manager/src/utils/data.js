@@ -70,7 +70,7 @@ export const SIDE_MENU_USER_DATA = [
 export const PRIORITY_DATA = [
     { label: "Low", value: "Low" },
     { label: "Medium", value: "Medium" },
-    { label: "Hign", value: "Hign" },
+    { label: "High", value: "High" },
 ]
 
 export const STATUS_DATA = [
