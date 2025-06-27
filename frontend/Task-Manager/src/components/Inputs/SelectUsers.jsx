@@ -3,6 +3,7 @@ import axiosInstance from '../../utils/axiosInstance';
 import { API_PATHS } from '../../utils/apiPaths';
 import { LuUsers } from 'react-icons/lu';
 import Modal from '../Modal';
+import AvatarGroup from '../AvatarGroup';
 
 const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
     const [allUsers, setAllUsers] = useState([]);
@@ -50,23 +51,15 @@ const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
 
     return (
         <div className='space-y-4 mt-2'>
-            {selectedUsersAvatars.length === 0 ? (
+            {selectedUsersAvatars.length === 0 && (
                 <button className='card-btn' onClick={() => setIsModalOpen(true)}>
                     <LuUsers className='text-sm' /> Add Members
                 </button>
-            ) : (
-                <div className='flex gap-2 items-center'>
-                    {selectedUsersAvatars.map((url, index) => (
-                        <img
-                            key={index}
-                            src={url}
-                            alt="User Avatar"
-                            className='w-8 h-8 rounded-full'
-                        />
-                    ))}
-                    <button className='text-sm underline text-blue-600' onClick={() => setIsModalOpen(true)}>
-                        Edit
-                    </button>
+            )}
+
+            {selectedUsersAvatars.length > 0 && (
+                <div className="cursor-pointer" onClick={() => setIsModalOpen(true)}>
+                    <AvatarGroup avatars={selectedUsersAvatars} maxVisible={3} />
                 </div>
             )}
 

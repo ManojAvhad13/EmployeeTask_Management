@@ -9,6 +9,8 @@ import moment from 'moment';
 import { LuTrash2 } from 'react-icons/lu';
 import SelectDropdown from '../../components/Inputs/SelectDropdown';
 import SelectUsers from '../../components/Inputs/SelectUsers';
+import TodoListInput from '../../components/Inputs/TodoListInput';
+import AddAttachmentInput from '../../components/Inputs/AddAttachmentInput';
 
 const CreateTask = () => {
 
@@ -22,8 +24,8 @@ const CreateTask = () => {
         priority: "Low",
         dueDate: null,
         assignedTo: [],
-        todoCkeckList: [],
-        attachment: [],
+        todoCheckList: [],
+        attachments: [],
     });
 
     const [currentTask, setCurrentTask] = useState(null);
@@ -45,8 +47,8 @@ const CreateTask = () => {
             priority: "Low",
             dueDate: null,
             assignedTo: [],
-            todoCkeckList: [],
-            attachment: [],
+            todoChecklist: [],
+            attachments: [],
         });
     };
 
@@ -159,6 +161,32 @@ const CreateTask = () => {
                                 />
                             </div>
 
+
+
+                        </div>
+                        <div className="mt-4">
+                            <label className='text-xs font-medium text-slate-600'>
+                                Todo Checklist
+                            </label>
+
+                            <TodoListInput
+                                todoList={taskData?.todoCheckList}
+                                setTodoList={(value) => {
+                                    handleValueChange("todoCheckList", value)
+                                }} />
+                        </div>
+
+                        <div className="mt-3">
+                            <label className='text-xs font-medium text-slate-600'>
+                                Add Attachments
+                            </label>
+
+                            <AddAttachmentInput
+                                attachments={taskData?.attachments}
+                                setAttachments={(value) =>
+                                    handleValueChange("attachments", value)
+                                }
+                            />
                         </div>
                     </div>
                 </div>
