@@ -20,17 +20,17 @@ const CustomBarChart = ({ data }) => {
         }
     };
 
-    const CustomTooltip = ({ active, payload }) => {
-        if (active && payload && payload.length) {
+    const CustomTooltip = ({ active, payload, className }) => {
+        if (active && Array.isArray(payload) && payload.length > 0) {
             return (
-                <div className="bg-white shadow-md rounded-lg p-2 border border-gray-300">
+                <div className={`bg-white shadow-md rounded-lg p-2 border border-gray-300 ${className || ''}`}>
                     <p className="text-xs font-semibold text-purple-800 mb-1">
-                        {payload[0].payload.priority}
+                        {payload[0]?.payload?.priority}
                     </p>
                     <p className="text-sm text-gray-600">
                         Count:{" "}
                         <span className='text-sm font-medium text-gray-900'>
-                            {payload[0].payload}
+                            {payload[0]?.payload?.count}
                         </span>
                     </p>
                 </div>
@@ -66,9 +66,9 @@ const CustomBarChart = ({ data }) => {
                         activeDot={{ r: 8, fill: "yellow" }}
                         activeStyle={{ fill: "green" }}
                     >
-                        {data.map((entry, index) => {
+                        {data.map((entry, index) => (
                             <Cell key={index} fill={getBarColor(entry)} />
-                        })}
+                        ))}
                     </Bar>
 
 

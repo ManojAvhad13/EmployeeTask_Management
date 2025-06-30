@@ -266,7 +266,7 @@ const getDashboardData = async (req, res) => {
 
         const taskDistribution = taskStatuses.reduce((acc, status) => {
             const formattedKey = status.replace(/\s+/g, ""); // Remove spaces for key consistency
-            acc[formattedKey] = taskDistribution.find(item => item._id === status)?.count || 0;
+            acc[formattedKey] = taskDistributionRaw.find(item => item._id === status)?.count || 0;
             return acc;
         }, {});
 

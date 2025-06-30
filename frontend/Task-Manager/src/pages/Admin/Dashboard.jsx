@@ -67,11 +67,11 @@ const Dashboard = () => {
         navigate('/admin/tasks')
     }
 
-    // useEffect(() => {
-    //     getDashboardData();
+    useEffect(() => {
+        getDashboardData();
 
-    //     return () => { };
-    // }, []);
+        return () => { };
+    }, []);
 
     return (
         <DashboardLayout activeMenu="Dashboard">
@@ -92,7 +92,14 @@ const Dashboard = () => {
 
                         label="Total Task"
                         value={addThousandSeparator(
-                            dashboardData?.charts?.taskDistribution?.All || 0
+                            (dashboardData?.charts?.taskDistribution?.All !== undefined
+                                ? dashboardData?.charts?.taskDistribution?.All
+                                : (
+                                    (dashboardData?.charts?.taskDistribution?.Pending || 0) +
+                                    (dashboardData?.charts?.taskDistribution?.InProgress || 0) +
+                                    (dashboardData?.charts?.taskDistribution?.Completed || 0)
+                                )
+                            )
                         )}
                         color="bg-blue-500"
                     />

@@ -70,7 +70,7 @@ const SideMenu = ({ activeMenu }) => {
 
                 </button>
             ))}
-            Side Menu
+
         </div>
     )
 };
