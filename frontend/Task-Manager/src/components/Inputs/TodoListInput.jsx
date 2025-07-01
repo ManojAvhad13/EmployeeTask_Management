@@ -5,15 +5,15 @@ const TodoListInput = ({ todoList = [], setTodoList }) => {
     const [option, setOption] = useState("");
 
     const handleAddOption = () => {
-        if (option.trim()) {
-            setTodoList([...todoList, option.trim()]);
+        const trimmed = option.trim();
+        if (trimmed && !todoList.includes(trimmed)) {
+            setTodoList([...todoList, trimmed]);
             setOption("");
         }
     };
 
     const handleDeleteOption = (index) => {
-        const updateArr = todoList.filter((_, idx) => idx !== index);
-        setTodoList(updateArr);
+        setTodoList(todoList.filter((_, idx) => idx !== index));
     };
 
     return (
@@ -28,7 +28,7 @@ const TodoListInput = ({ todoList = [], setTodoList }) => {
                     >
                         <div className="flex items-center gap-2 text-sm text-gray-800">
                             <span className="w-8 h-8 flex items-center justify-center bg-white border rounded-lg text-xs font-semibold text-gray-500">
-                                {index < 9 ? `0${index + 1}` : index + 1}
+                                {index + 1 < 10 ? `0${index + 1}` : index + 1}
                             </span>
                             <span>{item}</span>
                         </div>
@@ -43,12 +43,12 @@ const TodoListInput = ({ todoList = [], setTodoList }) => {
                 ))}
             </div>
 
-            <div className="flex items-center gap-2 pt-">
+            <div className="flex items-center gap-2">
                 <input
                     type="text"
                     placeholder="Enter task"
                     value={option}
-                    onChange={({ target }) => setOption(target.value)}
+                    onChange={(e) => setOption(e.target.value)}
                     className="flex-1 text-sm px-3 py-2 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-300"
                 />
                 <button

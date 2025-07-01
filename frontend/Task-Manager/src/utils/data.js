@@ -47,7 +47,7 @@ export const SIDE_MENU_DATA = [
 export const SIDE_MENU_USER_DATA = [
     {
         id: "01",
-        label: "Dasboard",
+        label: "Dashboard",
         icon: LuLayoutDashboard,
         path: "/user/dashboard",
     },

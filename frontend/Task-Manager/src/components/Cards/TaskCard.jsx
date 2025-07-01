@@ -45,7 +45,7 @@ const TaskCard = ({
             onClick={onClick}
             className="bg-white hover:shadow-xl transition-shadow duration-300 rounded-2xl p-5 border border-gray-200 shadow-sm cursor-pointer space-y-4"
         >
-            {/* Top Labels */}
+            {/* Status & Priority Labels */}
             <div className="flex flex-wrap gap-2 text-xs font-medium">
                 <span className={`px-3 py-1 rounded-full ${getStatusTagColor()}`}>
                     {status}
@@ -64,24 +64,31 @@ const TaskCard = ({
             {/* Progress Info */}
             <div>
                 <p className="text-sm text-gray-600 font-medium">
-                    Task Done: <span className="font-bold text-gray-800">{completedTodoCount} / {todoChecklist.length}</span>
+                    Task Done:{' '}
+                    <span className="font-bold text-gray-800">
+                        {completedTodoCount} / {todoChecklist?.length || 0}
+                    </span>
                 </p>
                 <Progress progress={progress} status={status} />
             </div>
 
-            {/* Dates */}
+            {/* Start & Due Dates */}
             <div className="grid grid-cols-2 gap-4 text-sm">
                 <div>
                     <p className="text-gray-400">Start</p>
-                    <p className="text-gray-800 font-medium">{moment(createdAt).format('Do MMM YYYY')}</p>
+                    <p className="text-gray-800 font-medium">
+                        {createdAt ? moment(createdAt).format('Do MMM YYYY') : '-'}
+                    </p>
                 </div>
                 <div>
                     <p className="text-gray-400">Due</p>
-                    <p className="text-gray-800 font-medium">{moment(dueDate).format('Do MMM YYYY')}</p>
+                    <p className="text-gray-800 font-medium">
+                        {dueDate ? moment(dueDate).format('Do MMM YYYY') : '-'}
+                    </p>
                 </div>
             </div>
 
-            {/* Footer: Avatars + Attachments */}
+            {/* Footer: Assigned Avatars + Attachment Count */}
             <div className="flex items-center justify-between pt-2 border-t border-gray-100">
                 <AvatarGroup avatars={assignedTo} />
                 {attachmentCount > 0 && (

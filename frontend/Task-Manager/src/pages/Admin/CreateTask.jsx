@@ -11,6 +11,8 @@ import SelectDropdown from '../../components/Inputs/SelectDropdown';
 import SelectUsers from '../../components/Inputs/SelectUsers';
 import TodoListInput from '../../components/Inputs/TodoListInput';
 import AddAttachmentInput from '../../components/Inputs/AddAttachmentInput';
+import Modal from '../../components/Modal';
+import DeleteAlert from '../../components/DeleteAlert';
 
 const CreateTask = () => {
     const location = useLocation();
@@ -74,7 +76,37 @@ const CreateTask = () => {
     };
 
     // Update Task
-    const updateTask = async () => { };
+    const updateTask = async () => {
+        setLoading(true);
+        try {
+            const todolist = taskData.todoCheckList?.map((item) => {
+                const prevTodoChecklist = currentTask?.todoCheckList || [];
+                const matchedTask = prevTodoChecklist.find((task) => task.text == item);
+
+                return {
+                    text: item,
+                    completed: matchedTask ? matchedTask.completed : false,
+                };
+            });
+
+            const response = await axiosInstance.put(
+                API_PATHS.TASK.UPDATE_TASK(taskId),
+                {
+                    ...taskData,
+                    dueDate: new Date(taskData.dueDate).toISOString(),
+                    todoCheckList: todolist,
+                }
+            );
+
+            toast.success("Task Updated Successfully");
+
+        } catch (error) {
+            console.error("Error creating task:", error);
+            setLoading(false);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     // Submit task button function
     const handleSubmit = async () => {
@@ -121,30 +153,40 @@ const CreateTask = () => {
                 API_PATHS.TASK.GET_TASK_BY_ID(taskId)
             );
 
-            if (response.data) {
+            if (response?.data) {
                 const taskInfo = response.data;
                 setCurrentTask(taskInfo);
 
                 setTaskData({
-                    title: taskInfo.title,
-                    description: taskInfo.description,
-                    priority: taskInfo.priority,
+                    title: taskInfo.title || "",
+                    description: taskInfo.description || "",
+                    priority: taskInfo.priority || "Low",
                     dueDate: taskInfo.dueDate
                         ? moment(taskInfo.dueDate).format("YYYY-MM-DD")
-                        : null,
-                    assignedTo: taskInfo?.assignedTo?.map((item) => item?._id) || [],
-                    todoCheckList:
-                        taskInfo.todoCheckList?.map((item) => item?.text) || [],
-                    attachments: taskInfo?.attachments || [],
+                        : "",
+                    assignedTo: taskInfo.assignedTo?.map(item => item?._id) || [],
+                    todoCheckList: taskInfo.todoCheckList?.map(item => item?.text) || [],
+                    attachments: taskInfo.attachments || [],
                 });
             }
         } catch (error) {
-            console.error("Error fetching users:", error);
+            console.error("Error fetching task details:", error);
         }
     };
 
+
     // Delete Task
-    const deleteTask = async () => { };
+    const deleteTask = async () => {
+        try {
+            await axiosInstance.delete(API_PATHS.TASK.DELETE_TASK(taskId));
+
+            setOpenDeleteAlert(false);
+            toast.success("Expense details deleted successfully");
+            navigate('/admin/task')
+        } catch (error) {
+            console.error("Error deleting expense:", error.response?.data?.message || error.message);
+        }
+    };
 
     useEffect(() => {
         if (taskId) {
@@ -292,6 +334,16 @@ const CreateTask = () => {
                     </div>
                 </div>
             </div>
+
+            <Modal
+                isOpen={openDeleteAlert}
+                onClose={() => setOpenDeleteAlert(false)}
+                title="Delete Task">
+                <DeleteAlert
+                    content="Are you sure you want to delete this task"
+                    onDelete={() => deleteTask()} />
+            </Modal>
+
         </DashboardLayout>
     )
 }
