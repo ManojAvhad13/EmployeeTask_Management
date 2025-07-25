@@ -13,10 +13,12 @@ const ManageUsers = () => {
     const getAllUsers = async () => {
         try {
             const response = await axiosInstance.get(API_PATHS.USERS.GET_ALL_USERS);
+
+            // Confirm the returned data shape; assuming response.data is an array
             if (Array.isArray(response.data) && response.data.length > 0) {
                 setAllUsers(response.data);
             } else {
-                setAllUsers([]); // Clear in case of empty
+                setAllUsers([]); // Clear if empty or unexpected shape
             }
         } catch (error) {
             console.error("Error fetching users:", error);
@@ -37,7 +39,7 @@ const ManageUsers = () => {
             link.setAttribute('download', 'user_details.xlsx');
             document.body.appendChild(link);
             link.click();
-            link.remove();
+            document.body.removeChild(link); // Changed to removeChild for consistency
             window.URL.revokeObjectURL(url);
         } catch (error) {
             console.error("Error downloading user details:", error);
@@ -63,11 +65,15 @@ const ManageUsers = () => {
                     </button>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6">
-                    {allUsers.map((user) => (
-                        <UserCard key={user._id} userInfo={user} />
-                    ))}
-                </div>
+                {allUsers.length === 0 ? (
+                    <p className="mt-6 text-center text-gray-500">No users found.</p>
+                ) : (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6">
+                        {allUsers.map((user) => (
+                            <UserCard key={user._id} userInfo={user} />
+                        ))}
+                    </div>
+                )}
             </div>
         </DashboardLayout>
     );

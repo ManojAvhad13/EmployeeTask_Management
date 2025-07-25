@@ -34,11 +34,13 @@ const ManageTasks = () => {
             ]);
         } catch (error) {
             console.error('Error fetching tasks:', error);
+            toast.error('Failed to fetch tasks. Please try again.');
         }
     };
 
     const handleClick = (task) => {
-        navigate(`/admin/create-task`, { state: { taskData: task._id } });
+        // Pass taskId consistent with CreateTask component expectations
+        navigate(`/admin/create-task`, { state: { taskId: task._id } });
     };
 
     const handleDownloadReport = async () => {
@@ -63,6 +65,7 @@ const ManageTasks = () => {
 
     useEffect(() => {
         getAllTasks();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filterStatus]);
 
     return (
@@ -109,7 +112,7 @@ const ManageTasks = () => {
                             progress={item.progress}
                             createdAt={item.createdAt}
                             dueDate={item.dueDate}
-                            assignedTo={item.assignedTo?.map((user) => user.profileImageUrl)}
+                            assignedTo={item.assignedTo?.map(user => user?.profileImageUrl).filter(Boolean)}
                             attachmentCount={item.attachments?.length || 0}
                             completedTodoCount={item.completedTodoCount || 0}
                             todoChecklist={item.todoChecklist || []}
